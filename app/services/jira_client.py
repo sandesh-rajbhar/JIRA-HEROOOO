@@ -20,15 +20,15 @@ class JiraClient:
         self._settings = settings
         self._cache: tuple[float, list[JiraTicket]] | None = None
 
-    async def get_assigned_tickets(self) -> list[JiraTicket]:
+    async def get_assigned_tickets(self, project_key: str | None = None) -> list[JiraTicket]:
         now = time.time()
         if self._cache and (now - self._cache[0]) < self._settings.jira_cache_ttl_seconds:
             LOGGER.debug("Returning Jira tickets from cache.")
-            return self._cache[1]
+            return self._filter_tickets(self._cache[1], project_key)
 
         tickets = await self._load_mock_tickets() if self._settings.jira_use_mock else await self._fetch_jira_tickets()
         self._cache = (now, tickets)
-        return tickets
+        return self._filter_tickets(tickets, project_key)
 
     async def _load_mock_tickets(self) -> list[JiraTicket]:
         mock_path = Path(self._settings.jira_mock_data_path)
@@ -110,3 +110,12 @@ class JiraClient:
                 values.extend(self._collect_text(child))
             return values
         return []
+
+    def _filter_tickets(self, tickets: list[JiraTicket], project_key: str | None) -> list[JiraTicket]:
+        if not project_key:
+            return tickets
+        normalized_prefix = project_key.strip().upper()
+        ticket_prefix = f"{normalized_prefix}-"
+        filtered = [ticket for ticket in tickets if ticket.ticket_id.upper().startswith(ticket_prefix)]
+        LOGGER.info("Filtered Jira tickets by prefix %s: %s matched", normalized_prefix, len(filtered))
+        return filtered

@@ -116,6 +116,27 @@ Copy-Item .env.example .env
 uvicorn app.main:app --reload
 ```
 
+## Run the UI
+
+Install the optional UI dependency if needed:
+
+```powershell
+pip install -e .[ui]
+```
+
+Start the Streamlit app:
+
+```powershell
+streamlit run app/ui.py
+```
+
+The UI lets you:
+
+- filter assigned tickets by project prefix such as `GA` or `ILPQC`
+- preview matching tickets in a table
+- paste raw notes and generate Jira-ready worklogs
+- inspect unmapped work and raw JSON output
+
 API base URL:
 
 ```text

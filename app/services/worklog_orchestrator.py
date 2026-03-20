@@ -30,9 +30,14 @@ class WorklogOrchestrator:
         self._task_mapper = task_mapper
         self._time_estimator = time_estimator
 
-    async def process(self, notes: str, working_hours: float) -> ProcessNotesResponse:
+    async def process(
+        self,
+        notes: str,
+        working_hours: float,
+        ticket_prefix: str | None = None,
+    ) -> ProcessNotesResponse:
         tasks = await self._note_parser.parse_notes(notes)
-        tickets = await self._jira_client.get_assigned_tickets()
+        tickets = await self._jira_client.get_assigned_tickets(project_key=ticket_prefix)
         mappings = await self._task_mapper.map_tasks(tasks, tickets)
         allocations = await self._time_estimator.estimate(tasks, mappings, working_hours)
         return self._build_response(tasks, mappings, allocations)

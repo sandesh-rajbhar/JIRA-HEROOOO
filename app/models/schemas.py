@@ -27,7 +27,7 @@ class JiraTicket(BaseModel):
     summary: str
     description: str = ""
 
-    model_config = {"populate_by_name": True}
+    model_config = {"populate_by_name": True, "serialize_by_alias": False}
 
 
 class TaskTicketMatch(BaseModel):
@@ -60,6 +60,7 @@ class UnmappedWork(BaseModel):
 class ProcessNotesRequest(BaseModel):
     notes: str = Field(min_length=1)
     working_hours: float = Field(gt=0)
+    ticket_prefix: str | None = Field(default=None, min_length=1)
 
     @field_validator("notes")
     @classmethod
@@ -68,6 +69,14 @@ class ProcessNotesRequest(BaseModel):
         if not cleaned:
             raise ValueError("Notes must not be empty.")
         return cleaned
+
+    @field_validator("ticket_prefix")
+    @classmethod
+    def validate_ticket_prefix(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        cleaned = value.strip().upper()
+        return cleaned or None
 
 
 class ProcessNotesResponse(BaseModel):

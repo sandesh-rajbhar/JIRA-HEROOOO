@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     def jira_search_url(self) -> str:
         if not self.jira_base_url:
             raise ValueError("JIRA_BASE_URL is not configured.")
-        return f"{self.jira_base_url.rstrip('/')}/rest/api/3/search"
+        return f"{self.jira_base_url.rstrip('/')}/rest/api/3/search/jql"
 
 
 @lru_cache(maxsize=1)
