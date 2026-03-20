@@ -1,0 +1,30 @@
+[project]
+name = "ai-jira-worklog-assistant"
+version = "0.1.0"
+description = "Production-ready FastAPI backend for converting developer notes into Jira worklogs."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.115.0,<1.0.0",
+  "httpx>=0.27.0,<1.0.0",
+  "openai>=2.16.0,<3.0.0",
+  "pydantic>=2.9.0,<3.0.0",
+  "pydantic-settings>=2.5.0,<3.0.0",
+  "uvicorn[standard]>=0.32.0,<1.0.0",
+]
+
+[project.optional-dependencies]
+ui = ["streamlit>=1.40.0,<2.0.0"]
+
+[tool.uv]
+package = true
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.setuptools.package-data]
+app = ["py.typed"]

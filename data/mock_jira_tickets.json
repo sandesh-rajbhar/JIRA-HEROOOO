@@ -1,0 +1,32 @@
+{
+  "issues": [
+    {
+      "key": "JIRA-101",
+      "fields": {
+        "summary": "Harden authentication middleware and refresh token handling",
+        "description": "Backend work to improve token refresh logic, session validation, and failure tracing for expired credentials."
+      }
+    },
+    {
+      "key": "JIRA-102",
+      "fields": {
+        "summary": "Implement profile settings validation and error messaging",
+        "description": "Add form validation, backend payload checks, and cleaner error responses for profile update workflows."
+      }
+    },
+    {
+      "key": "JIRA-103",
+      "fields": {
+        "summary": "Refactor dashboard widgets and fix loading state regressions",
+        "description": "Refactor frontend dashboard components, resolve UI rendering issues, and tighten loading state behavior."
+      }
+    },
+    {
+      "key": "JIRA-104",
+      "fields": {
+        "summary": "Improve bulk upload API validation and observability",
+        "description": "Backend and validation work for bulk upload parsing, edge-case handling, and structured logging."
+      }
+    }
+  ]
+}
